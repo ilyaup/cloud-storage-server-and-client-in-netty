@@ -1,0 +1,9 @@
+.gradle/
+common/build/
+client/build/
+server/build/
+common/out/
+client/out/
+server/out/
+gradle/
+.idea/

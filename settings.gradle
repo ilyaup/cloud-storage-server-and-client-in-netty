@@ -1,0 +1,5 @@
+rootProject.name = 'hw4'
+include "server"
+include "client"
+include 'common'
+
