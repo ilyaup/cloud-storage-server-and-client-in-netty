@@ -1,6 +1,6 @@
 To run server and client, you should run "main" method in cloudserver package in CloudServer class. After it is loaded <br/>
-and running, you should run "main" method in cloudclient package in CloudClient class. When it is running, you can run
-these commands in client's console:
+and running, you should run "main" method in cloudclient package in CloudClient class. When it is running, you can run<br/>
+these commands:
 
 login &lt;login&gt; &lt;password&gt; <br/>
 Example: <br/>
