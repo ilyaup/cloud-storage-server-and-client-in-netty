@@ -19,6 +19,7 @@ public class CloudClientHandler extends ChannelInboundHandlerAdapter {
     public static final Map<String, BiConsumer<String[], ChannelHandlerContext>> runCmd = new HashMap<>();
     private final Scanner scanner = new Scanner(System.in);
 
+    // cmd[0] - command name (such as login, download etc.), other elements are command specific arguments.
     static {
         runCmd.put("login", (cmd, ctx) -> {
             ctx.writeAndFlush(new User(cmd[1], cmd[2]));
@@ -37,7 +38,7 @@ public class CloudClientHandler extends ChannelInboundHandlerAdapter {
                 RandomAccessFile ref = new RandomAccessFile(cmd[2], "r");
                 String pathname = cmd[1] + Paths.get(cmd[2]).getFileName();
                 ctx.writeAndFlush(new FileMetadata(pathname.length(), pathname, ref.length()));
-                PipelineStateManager.setupPipeline("upload1", ctx);
+                PipelineStateManager.setupPipeline("upload_processing", ctx);
                 Thread.sleep(1000);
                 ctx.writeAndFlush(new ChunkedFile(ref));
             } catch (IOException | InterruptedException e) {
@@ -50,18 +51,19 @@ public class CloudClientHandler extends ChannelInboundHandlerAdapter {
 
     private void clientTerminal(ChannelHandlerContext ctx) {
         String[] cmd = scanner.nextLine().split(" ");
+        String cmdName = cmd[0];
         if (cmd.length != 3) {
             System.out.println("Should be 1 cmd and 2 arguments. Enter a command from README.md and two arguments:");
             clientTerminal(ctx);
             return;
         }
-        if (runCmd.get(cmd[0]) == null) {
+        if (runCmd.get(cmdName) == null) {
             System.out.println("No such command. Enter a command from README.md:");
             clientTerminal(ctx);
             return;
         }
-        PipelineStateManager.setupPipeline(cmd[0], ctx);
-        runCmd.get(cmd[0]).accept(cmd, ctx);
+        PipelineStateManager.setupPipeline(cmdName, ctx);
+        runCmd.get(cmdName).accept(cmd, ctx);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package cloud;
 
-import cloud.FileMetadata;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

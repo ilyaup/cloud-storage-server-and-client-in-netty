@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 
 public class FileAcceptor extends ChannelInboundHandlerAdapter {
 
+    // Reads as many bytes as it is given and writes them to the file.
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf bb = (ByteBuf) msg;

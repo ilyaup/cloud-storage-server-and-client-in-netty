@@ -11,12 +11,12 @@ import java.nio.file.Paths;
 public class MetadataAcceptor extends ChannelInboundHandlerAdapter {
 
     public static String pathname = "";
-    public static int fileLen = 0;
-    public static int writtenBytes = 0;
+    public static int fileLen;
+    public static int writtenBytes;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        PipelineStateManager.setupPipeline("download1", ctx);
+        PipelineStateManager.setupPipeline("download_processing", ctx);
         FileMetadata fileMetadata = (FileMetadata) msg;
         pathname = fileMetadata.getPathname();
         Files.deleteIfExists(Paths.get(pathname));

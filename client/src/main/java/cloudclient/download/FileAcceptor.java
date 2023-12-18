@@ -1,23 +1,17 @@
 package cloudclient.download;
 
-import cloud.FileMetadata;
-import cloudclient.CloudClientHandler;
-import cloudclient.PipelineStateManager;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileAcceptor extends ChannelInboundHandlerAdapter {
 
+    // Reads as many bytes as it is given and writes them to the file.
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf bb = (ByteBuf) msg;

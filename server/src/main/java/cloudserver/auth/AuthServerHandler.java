@@ -1,6 +1,7 @@
 package cloudserver.auth;
 
-import io.netty.channel.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 public class AuthServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -9,12 +10,16 @@ public class AuthServerHandler extends ChannelInboundHandlerAdapter {
         User user = (User) msg;
         String login = user.getLogin();
         String password = user.getPassword();
+        ctx.writeAndFlush(getResponse(login, password));
+    }
+
+    private static String getResponse(String login, String password) {
         String response;
         if (Users.registeredUsers.get(login) == null) {
             response = "No such user: " + login;
         } else if (Users.loginsOfLoggedInUsers.contains(login)) {
             response = "You are already logged in.";
-        }  else if (Users.userLogInAttempts.get(login) <= 0) {
+        } else if (Users.userLogInAttempts.get(login) <= 0) {
             response = "You have tried too many times. Access is denied.";
         } else if (!Users.registeredUsers.get(login).equals(password)) {
             Users.userLogInAttempts.put(login, Users.userLogInAttempts.get(login) - 1);
@@ -24,7 +29,7 @@ public class AuthServerHandler extends ChannelInboundHandlerAdapter {
             Users.userLogInAttempts.put(login, 3);
             response = "User " + login + " just have logged in successfully!";
         }
-        ctx.writeAndFlush(response);
+        return response;
     }
 
 }

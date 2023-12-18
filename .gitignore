@@ -1,9 +1,6 @@
 .gradle/
-common/build/
-client/build/
-server/build/
-common/out/
-client/out/
-server/out/
+**/build/
+**/out/
+!src/**/build/
 gradle/
 .idea/

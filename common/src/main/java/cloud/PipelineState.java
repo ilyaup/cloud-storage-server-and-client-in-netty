@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PipelineState {
-    LOGIN, UPLOAD, DOWNLOAD, DOWNLOAD1, UPLOAD1, MOVE, COPY;
+    LOGIN, UPLOAD, DOWNLOAD, DOWNLOAD_PROCESSING, UPLOAD_PROCESSING, MOVE, COPY;
 
     public String toCmdName() {
         return this.name().toLowerCase();

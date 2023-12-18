@@ -41,7 +41,7 @@ public class PortUnificationServerHandler extends ByteToMessageDecoder {
             ctx.pipeline().addLast(new MetadataDecoder());
             ctx.pipeline().addLast("uploadServerHandler", new UploadServerHandler());
         });
-        setupPipeline.put("upload1", (ctx) -> {
+        setupPipeline.put("upload_processing", (ctx) -> {
             ctx.pipeline().addLast(new ResponseEncoder());
             ctx.pipeline().addLast(new FileAcceptor());
             ctx.pipeline().addLast("chunkedWriteHandler", new ChunkedWriteHandler());
@@ -54,9 +54,11 @@ public class PortUnificationServerHandler extends ByteToMessageDecoder {
         });
     }
 
+    private final static int INT_SIZE = 4;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        if (in.readableBytes() < 4) {
+        if (in.readableBytes() < INT_SIZE) {
             return;
         }
         int cmdNameLen = in.readInt();

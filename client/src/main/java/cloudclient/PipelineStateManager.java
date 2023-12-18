@@ -3,7 +3,9 @@ package cloudclient;
 import cloud.MetadataDecoder;
 import cloud.PipelineState;
 import cloudclient.auth.AuthRequestEncoder;
-import cloudclient.download.*;
+import cloudclient.download.DownloadRequestEncoder;
+import cloudclient.download.FileAcceptor;
+import cloudclient.download.MetadataAcceptor;
 import cloudclient.movecopy.CopyRequestEncoder;
 import cloudclient.movecopy.MoveRequestEncoder;
 import cloudclient.upload.UploadRequestEncoder;
@@ -45,14 +47,14 @@ public class PipelineStateManager {
             ctx.pipeline().addFirst(new MetadataDecoder());
             ctx.pipeline().addFirst(new DownloadRequestEncoder());
         });
-        setupHandlersByState.put(PipelineState.DOWNLOAD1, (ctx) -> {
+        setupHandlersByState.put(PipelineState.DOWNLOAD_PROCESSING, (ctx) -> {
             ctx.pipeline().addFirst(new ChunkedWriteHandler());
             ctx.pipeline().addFirst(new FileAcceptor());
         });
         setupHandlersByState.put(PipelineState.UPLOAD, (ctx) -> {
             ctx.pipeline().addFirst(new UploadRequestEncoder());
         });
-        setupHandlersByState.put(PipelineState.UPLOAD1, (ctx) -> {
+        setupHandlersByState.put(PipelineState.UPLOAD_PROCESSING, (ctx) -> {
             ctx.pipeline().addFirst(new ChunkedWriteHandler());
             ctx.pipeline().addFirst(new TextResponseDecoder());
         });
